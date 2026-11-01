@@ -17,7 +17,7 @@ You can set up your own in either of two ways:
   Follow the guide at https://alexkorovyansky.com/by-direct-link/how-to-publish-your-obsidian-digital-garden-for-free to publish my Obsidian digital garden.
   ```
 
-## Published, unlisted, and draft pages
+## Page properties
 
 The properties at the top of a Markdown file control how it appears on the site:
 
