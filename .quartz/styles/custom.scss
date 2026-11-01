@@ -1,0 +1,180 @@
+@use "./variables.scss" as *;
+
+// put your custom CSS here!
+
+// Use a photo as the logo
+@media all and (min-width: 800px) {
+    .page-title a {
+        display: inline-block;
+        width: 160px;
+        height: 160px;
+        text-indent: -9999px;
+        background-image: url("/static/logo.jpg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: left center;
+    }
+}
+
+@media all and (max-width: 800px) {
+  .left.sidebar .flex-component {
+    position: relative;
+    padding-right: 3.5rem;        /* space for the avatar */
+  }
+  .left.sidebar .flex-component::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);  /* vertical center within the toolbar row */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-image: url("/static/logo.jpg");
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+  }
+}
+
+// show site title as text on mobile (theme hides it there)
+@media all and (max-width: 800px) {
+  .page-title {
+    display: block !important;
+  }
+  .page-title a {
+    display: inline-block !important;
+    text-indent: 0 !important;
+    background-image: none !important;
+    width: auto !important;
+    height: auto !important;
+  }
+}
+
+// Mobile header
+@media all and (max-width: 800px) {
+  // A solid bar. The background is on a separate layer, so it can fade out
+  // while the menu is open without affecting the header's contents.
+  .left.sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--light);
+    transition: opacity 300ms ease-in-out;
+  }
+
+  .mobile-no-scroll .left.sidebar::before {
+    opacity: 0;
+  }
+
+  // Search: a small magnifying glass icon.
+  .search {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .search > .search-button {
+    width: auto;
+    height: auto;
+    padding: 0.25rem;
+    border: none;
+    background: none;
+    box-shadow: none;
+  }
+  .search > .search-button > p {
+    display: none;
+  }
+}
+
+// The theme styles only paragraphs, so a list without blank lines between its items,
+// where the text isn't inside a paragraph, would look different from the rest of the page.
+.page article li,
+.page article li strong {
+  color: var(--text-muted);
+}
+
+.page article li,
+.page article li strong,
+.page article li a {
+  font-family: var(--font-interface);
+}
+
+// Fix clipped text in the explorer
+.explorer {
+  overflow: visible;
+}
+
+// The home page title is for the browser tab and link previews.
+// Its visible heading is written in index.md.
+body[data-slug="index"] .article-title,
+body[data-slug="index"] .toc li.depth-0 {
+  display: none;
+}
+
+// The hidden heading above pushes the other home page TOC items one level deeper.
+body[data-slug="index"] .toc .depth-2 { padding-left: 0; }
+body[data-slug="index"] .toc .depth-3 { padding-left: 1rem; }
+
+// Don't scroll to the active explorer item when the home page opens:
+// the large margin keeps scrollIntoView from moving the scroll position
+body[data-slug="index"] .explorer .active {
+  scroll-margin-top: 100000px;
+}
+
+// Keep the collapsed TOC from clipping its heading
+.toc {
+  overflow: visible;
+}
+
+.toc > button {
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+// TOC items: visible when expanded, hidden when collapsed
+.toc > ul,
+.toc ul.overflow {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.toc.collapsed > ul,
+.toc.collapsed ul.overflow {
+  max-height: 0 !important;
+}
+
+.toc:not(.collapsed) > ul,
+.toc:not(.collapsed) ul.overflow {
+  max-height: 100%;
+}
+
+// restore TOC nesting indentation (theme removed it)
+.toc .depth-1 { padding-left: 1rem; }
+.toc .depth-2 { padding-left: 2rem; }
+.toc .depth-3 { padding-left: 3rem; }
+.toc .depth-4 { padding-left: 4rem; }
+.toc .depth-5 { padding-left: 5rem; }
+
+// Hide the block that lists the pages in a folder
+.page-listing {
+  display: none;
+}
+
+// Hide the date and reading time on the home page only (it's a content page, not a folder page)
+body[data-slug="index"] .content-meta {
+  display: none;
+}
+
+// Custom footer text
+footer p {
+  visibility: hidden;
+  position: relative;
+}
+
+footer p::after {
+  content: "© 2026 Alex Korovyansky";
+  visibility: visible;
+  position: absolute;
+  left: 0;
+}

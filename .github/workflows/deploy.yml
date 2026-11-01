@@ -1,0 +1,53 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history so Quartz can read page dates
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # Reuse Quartz and its built plugins until their pinned versions change.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .quartz/build
+            !.quartz/build/public
+            !.quartz/build/node_modules
+          key: quartz-${{ runner.os }}-node24-${{ hashFiles('.quartz/ops/build.sh', '.quartz/quartz.lock.json') }}
+
+      - name: Build
+        run: bash .quartz/ops/build.sh
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .quartz/build/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

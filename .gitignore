@@ -1,0 +1,18 @@
+# Generated files
+.quartz/build
+
+# Obsidian – ephemeral
+.obsidian/workspace*.json
+.obsidian/cache
+.trash/
+
+# OS — macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# OS — Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
